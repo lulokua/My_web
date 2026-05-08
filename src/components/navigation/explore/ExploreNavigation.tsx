@@ -6,6 +6,38 @@ import {
   featuredExploreCards,
 } from "./exploreNavigation.data";
 
+const menuVariants = {
+  closed: {
+    clipPath: "inset(0% 0% 100% 0%)",
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+      ease: [0.32, 0, 0.67, 0],
+      staggerChildren: 0.01,
+      staggerDirection: -1,
+    },
+  },
+  open: {
+    clipPath: "inset(0% 0% 0% 0%)",
+    opacity: 1,
+    transition: {
+      duration: 0.4,
+      ease: [0.22, 1, 0.36, 1],
+      staggerChildren: 0.02,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  closed: { opacity: 0, y: 10 },
+  open: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } 
+  },
+};
+
 export function ExploreNavigation() {
   const [isExploreOpen, setIsExploreOpen] = useState(false);
   const exploreRef = useRef<HTMLDivElement>(null);
@@ -56,33 +88,38 @@ export function ExploreNavigation() {
       <AnimatePresence>
         {isExploreOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="absolute left-0 top-full w-full overflow-hidden border-t border-white/10 bg-black"
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="absolute left-0 top-full w-full min-h-screen border-t border-white/10 bg-black overflow-hidden"
           >
             <div className="mx-auto flex max-w-7xl px-10 py-12">
               <div className="flex w-1/4 flex-col gap-5 border-r border-white/10 pr-8">
                 {exploreLinks.map((item) => (
-                  <a
+                  <motion.a
+                    variants={itemVariants}
                     key={item.name}
                     href={item.href}
                     className="text-[15px] font-medium text-white transition-colors hover:text-white/70"
                     onClick={() => setIsExploreOpen(false)}
                   >
                     {item.name}
-                  </a>
+                  </motion.a>
                 ))}
               </div>
 
               <div className="w-3/4 pl-12">
-                <h3 className="mb-6 text-xs font-bold tracking-[0.2em] text-white/50">
+                <motion.h3 
+                  variants={itemVariants} 
+                  className="mb-6 text-xs font-bold tracking-[0.2em] text-white/50"
+                >
                   FEATURED
-                </h3>
+                </motion.h3>
                 <div className="grid grid-cols-3 gap-8">
                   {featuredExploreCards.map((card) => (
-                    <article
+                    <motion.article
+                      variants={itemVariants}
                       key={card.title}
                       className="group flex cursor-pointer flex-col"
                     >
@@ -104,7 +141,7 @@ export function ExploreNavigation() {
                         {card.type}
                         <span className="ml-4">{card.date}</span>
                       </div>
-                    </article>
+                    </motion.article>
                   ))}
                 </div>
               </div>
