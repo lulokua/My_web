@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import {
   Camera,
@@ -14,13 +14,10 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4";
+  "https://my-blog.cn-nb1.rains3.com/My_web/hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a.mp4";
 
 export default function Index() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const fadeFrameRef = useRef<number | null>(null);
-  const resetTimeoutRef = useRef<number | null>(null);
-  const fadeOutStartedRef = useRef(false);
   const [isExploreOpen, setIsExploreOpen] = useState(false);
   const exploreRef = useRef<HTMLDivElement>(null);
 
@@ -35,95 +32,6 @@ export default function Index() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const fadeVideo = useCallback((targetOpacity: number, duration = 500) => {
-    const video = videoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    if (fadeFrameRef.current !== null) {
-      cancelAnimationFrame(fadeFrameRef.current);
-    }
-
-    const start = performance.now();
-    const startOpacity = Number.parseFloat(video.style.opacity || "0");
-
-    const step = (time: number) => {
-      const progress = Math.min((time - start) / duration, 1);
-      const opacity = startOpacity + (targetOpacity - startOpacity) * progress;
-
-      video.style.opacity = opacity.toString();
-
-      if (progress < 1) {
-        fadeFrameRef.current = requestAnimationFrame(step);
-      } else {
-        fadeFrameRef.current = null;
-      }
-    };
-
-    fadeFrameRef.current = requestAnimationFrame(step);
-  }, []);
-
-  const handleCanPlay = useCallback(() => {
-    const video = videoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    video.play().catch(() => undefined);
-    fadeVideo(1);
-  }, [fadeVideo]);
-
-  const handleTimeUpdate = useCallback(() => {
-    const video = videoRef.current;
-
-    if (!video || !Number.isFinite(video.duration)) {
-      return;
-    }
-
-    const remaining = video.duration - video.currentTime;
-
-    if (!fadeOutStartedRef.current && remaining <= 0.55) {
-      fadeOutStartedRef.current = true;
-      fadeVideo(0);
-    }
-  }, [fadeVideo]);
-
-  const handleEnded = useCallback(() => {
-    const video = videoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    fadeOutStartedRef.current = false;
-    video.style.opacity = "0";
-
-    if (resetTimeoutRef.current !== null) {
-      window.clearTimeout(resetTimeoutRef.current);
-    }
-
-    resetTimeoutRef.current = window.setTimeout(() => {
-      video.currentTime = 0;
-      video.play().catch(() => undefined);
-      fadeVideo(1);
-    }, 100);
-  }, [fadeVideo]);
-
-  useEffect(() => {
-    return () => {
-      if (fadeFrameRef.current !== null) {
-        cancelAnimationFrame(fadeFrameRef.current);
-      }
-
-      if (resetTimeoutRef.current !== null) {
-        window.clearTimeout(resetTimeoutRef.current);
-      }
-    };
   }, []);
 
   // Initialize smooth scrolling
@@ -147,12 +55,10 @@ export default function Index() {
           src={HERO_VIDEO}
           muted
           autoPlay
+          loop
           playsInline
           preload="auto"
-          style={{ opacity: 0 }}
-          onCanPlay={handleCanPlay}
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={handleEnded}
+          onCanPlay={() => videoRef.current?.play().catch(() => undefined)}
         />
 
         <nav className="fixed top-0 z-50 w-full bg-black px-10 py-6" ref={exploreRef}>
@@ -171,17 +77,6 @@ export default function Index() {
                     <ChevronDown className="h-5 w-5" />
                   </motion.div>
                 </button>
-              </div>
-              <div className="ml-12 hidden items-center gap-12 md:flex">
-                {["Features", "Pricing", "关于"].map((item) => (
-                  <a
-                    key={item}
-                    href={`#${item.toLowerCase()}`}
-                    className="text-base font-medium text-white/80 transition-colors hover:text-white"
-                  >
-                    {item}
-                  </a>
-                ))}
               </div>
             </div>
           </div>
