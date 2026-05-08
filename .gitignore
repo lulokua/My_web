@@ -31,3 +31,8 @@ coverage/
 
 # misc
 *.pem
+
+# AI tools
+.claude/
+.codex/
+.gemini/
