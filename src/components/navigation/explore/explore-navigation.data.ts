@@ -2,7 +2,15 @@ import type { ExploreLink, FeaturedExploreCard } from "./types";
 
 export const exploreLinks: ExploreLink[] = [
   { name: "Home", href: "/" },
-  { name: "Missions", href: "#missions" },
+  {
+    name: "Goals",
+    subItems: [
+      {
+        name: "2026",
+        subItems: [{ name: "May", href: "#2026-may" }],
+      },
+    ],
+  },
   { name: "Moments", href: "#moments" },
 ];
 
@@ -14,6 +22,7 @@ export const featuredExploreCards: FeaturedExploreCard[] = [
     title: "For NASA's TESS, Stellar Eclipses Shed Light on Possible New Worlds",
     type: "ARTICLE",
     date: "3 DAYS AGO",
+    href: "#feature-tess",
   },
   {
     image:
@@ -22,6 +31,7 @@ export const featuredExploreCards: FeaturedExploreCard[] = [
     title: "650 NASA Volunteers Have Co-Authored Scientific Papers",
     type: "ARTICLE",
     date: "2 DAYS AGO",
+    href: "#feature-volunteers",
   },
   {
     image:
@@ -30,5 +40,6 @@ export const featuredExploreCards: FeaturedExploreCard[] = [
     title: "What's Up: May 2026 Skywatching Tips from NASA",
     type: "ARTICLE",
     date: "7 DAYS AGO",
+    href: "#feature-skywatching",
   },
 ];

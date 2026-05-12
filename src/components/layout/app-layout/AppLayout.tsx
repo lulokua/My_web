@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ExploreNavigation } from "@/components/navigation/explore";
+import { SiteHeader } from "@/components/navigation/site-header";
 
 type AppLayoutProps = {
   children: ReactNode;
@@ -7,8 +7,8 @@ type AppLayoutProps = {
 
 export function AppLayout({ children }: AppLayoutProps) {
   return (
-    <main className="bg-black">
-      <ExploreNavigation />
+    <main className="min-h-screen bg-black text-white">
+      <SiteHeader />
       {children}
     </main>
   );

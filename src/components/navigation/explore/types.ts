@@ -1,6 +1,7 @@
 export type ExploreLink = {
   name: string;
-  href: string;
+  href?: string;
+  subItems?: ExploreLink[];
 };
 
 export type FeaturedExploreCard = {
@@ -9,4 +10,5 @@ export type FeaturedExploreCard = {
   title: string;
   type: string;
   date: string;
+  href?: string;
 };

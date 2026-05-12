@@ -1,35 +1,27 @@
-# Asme Landing Page
+# My Web
 
-React + TypeScript + Vite + Tailwind CSS landing page with Framer Motion and Lucide icons.
+这是一个基于 React、TypeScript、Vite 和 Tailwind CSS 的落地页项目。
 
-## Project Structure
-
-```text
-src/
-  app/                  # App-level composition and global providers/hooks
-  components/
-    layout/             # Global layout shells
-    navigation/         # Global navigation modules
-  pages/
-    home/               # Home page composition, page-only data and sections
-  shared/
-    constants/          # Cross-page constants, media URLs, config values
-    hooks/              # Cross-page React hooks
-```
-
-Global UI, such as the Explore navigation, lives under `src/components/`.
-Page-only sections stay under their page folder, for example `src/pages/home/`.
-
-## Development
+## 快速开始
 
 ```bash
+npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`.
+默认开发地址：`http://localhost:5173`
 
-## Build
+## 常用命令
 
 ```bash
+npm run dev
 npm run build
+npm run preview
+npm run lint
 ```
+
+## 文档入口
+
+- [项目概览](./docs/project-overview.md)
+- [目录结构说明](./docs/project-structure.md)
+- [开发规范](./docs/development-guide.md)
