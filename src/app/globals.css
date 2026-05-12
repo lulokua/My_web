@@ -1,3 +1,41 @@
+@font-face {
+  font-family: 'MiSans';
+  src: url('https://my-blog.cn-nb1.rains3.com/my-blog-fonts/MiSans-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MiSans';
+  src: url('https://my-blog.cn-nb1.rains3.com/my-blog-fonts/MiSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MiSans';
+  src: url('https://my-blog.cn-nb1.rains3.com/my-blog-fonts/MiSans-Demibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MiSans';
+  src: url('https://my-blog.cn-nb1.rains3.com/my-blog-fonts/MiSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'MiSans', system-ui, -apple-system, sans-serif;
+  }
+}
