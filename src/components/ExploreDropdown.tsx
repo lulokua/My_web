@@ -1,60 +1,84 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Bookmark } from "lucide-react";
 
-const links = [
-  { label: "Home", href: "/" },
-  { label: "Missions", href: "https://www.nasa.gov/missions/" },
-  { label: "Humans in Space", href: "https://www.nasa.gov/humans-in-space/" },
-  { label: "Earth", href: "https://www.nasa.gov/earth/" },
-  { label: "The Solar System", href: "https://science.nasa.gov/solar-system/" },
-  { label: "The Universe", href: "https://science.nasa.gov/universe/" },
-  { label: "Science", href: "https://science.nasa.gov/" },
-  { label: "Aeronautics", href: "https://www.nasa.gov/aeronautics/" },
-  { label: "Technology", href: "https://www.nasa.gov/technology/" },
-  { label: "Learning Resources", href: "https://www.nasa.gov/learning-resources/" },
-  { label: "About NASA", href: "https://www.nasa.gov/about/" },
-  { label: "Español", href: "https://www.nasa.gov/es/" }
-];
+import type { Locale } from "@/lib/i18n";
 
-const featuredItems = [
-  {
-    title: "NASA's Perseverance Rover Snaps Selfie in Mars' Western Frontier",
-    readTime: "6 MIN READ",
-    type: "ARTICLE",
-    timeAgo: "3 HOURS AGO",
-    image: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    title: "NASA Pushes Next-Gen Mars Helicopter Rotor Blades Past Mach 1",
-    readTime: "6 MIN READ",
-    type: "ARTICLE",
-    timeAgo: "5 DAYS AGO",
-    image: "https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=600&auto=format&fit=crop"
-  },
-  {
-    title: "What's Up: May 2026 Skywatching Tips from NASA",
-    readTime: "3 MIN READ",
-    type: "ARTICLE",
-    timeAgo: "2 WEEKS AGO",
-    image: "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?q=80&w=600&auto=format&fit=crop"
+type ExploreLink = {
+  label: string;
+  href: string;
+  active?: boolean;
+};
+
+type FeaturedItem = {
+  title: string;
+  createdAt: string;
+  image: string;
+};
+
+type ExploreDropdownProps = {
+  label: string;
+  featuredLabel: string;
+  featuredItems: readonly FeaturedItem[];
+  links: readonly ExploreLink[];
+  locale: Locale;
+};
+
+function pluralizeEnglish(value: number, unit: string): string {
+  return `${value} ${unit}${value === 1 ? "" : "s"} ago`;
+}
+
+function formatTimeAgo(date: Date, locale: Locale): string {
+  const now = new Date();
+  const diffMs = Math.max(0, now.getTime() - date.getTime());
+  const seconds = Math.floor(diffMs / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const weeks = Math.floor(days / 7);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365);
+
+  if (locale === "zh") {
+    if (seconds < 60) return "刚刚";
+    if (minutes < 60) return `${minutes} 分钟前`;
+    if (hours < 24) return `${hours} 小时前`;
+    if (days < 7) return `${days} 天前`;
+    if (weeks < 4) return `${weeks} 周前`;
+    if (months < 12) return `${months} 个月前`;
+    return `${years} 年前`;
   }
-];
 
-export default function ExploreDropdown() {
+  if (seconds < 60) return "Just now";
+  if (minutes < 60) return pluralizeEnglish(minutes, "minute");
+  if (hours < 24) return pluralizeEnglish(hours, "hour");
+  if (days < 7) return pluralizeEnglish(days, "day");
+  if (weeks < 4) return pluralizeEnglish(weeks, "week");
+  if (months < 12) return pluralizeEnglish(months, "month");
+  return pluralizeEnglish(years, "year");
+}
+
+export default function ExploreDropdown({
+  label,
+  featuredLabel,
+  featuredItems,
+  links,
+  locale,
+}: ExploreDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -64,11 +88,14 @@ export default function ExploreDropdown() {
   return (
     <div className="flex items-center" ref={dropdownRef}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (isOpen) setLoadedImages(new Set());
+          setIsOpen(!isOpen);
+        }}
         className="flex items-center space-x-2 focus:outline-none group"
       >
         <span className="inline-block font-bold text-xl text-white group-hover:text-gray-300 transition-colors">
-          Explore
+          {label}
         </span>
         <ChevronDown
           className={`w-5 h-5 text-white transition-transform duration-300 ${
@@ -77,69 +104,70 @@ export default function ExploreDropdown() {
         />
       </button>
 
-      {/* Mega Menu Dropdown */}
       <div
-        className={`absolute left-0 top-[84px] w-full bg-black shadow-2xl z-50 h-[calc(100vh-84px)] overflow-y-auto transition-all duration-500 ease-in-out ${
+        className={`absolute left-0 top-16 sm:top-[84px] w-full bg-black shadow-2xl z-50 h-[calc(100dvh-64px)] sm:h-[calc(100dvh-84px)] overflow-y-auto transition-all duration-500 ease-in-out ${
           isOpen
             ? "opacity-100 visible translate-y-0 border-t border-gray-800"
             : "opacity-0 invisible -translate-y-4 border-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row py-8 px-4 sm:px-6 lg:px-8 gap-12">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row py-6 sm:py-8 px-4 sm:px-6 lg:px-8 gap-8 md:gap-12">
+          <div className="md:w-1/4 flex flex-col space-y-3 sm:space-y-4">
+            {links.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className={`text-sm sm:text-base font-medium text-white hover:text-gray-300 w-fit ${
+                  link.active ? "border-b-2 border-dotted border-white pb-0.5" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
 
-            {/* Sidebar Links */}
-            <div className="md:w-1/4 flex flex-col space-y-4">
-              {links.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`text-base font-medium text-white hover:text-gray-300 w-fit ${
-                    link.label === "Home" ? "border-b-2 border-dotted border-white pb-0.5" : ""
-                  }`}
-                >
-                  {link.label}
-                </Link>
+          <div className="md:w-3/4 flex flex-col">
+            <h3 className="text-xs font-bold tracking-wider text-gray-400 mb-6 uppercase">
+              {featuredLabel}
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+              {featuredItems.map((item, index) => (
+                <div key={index} className="flex flex-col group cursor-pointer">
+                  <div className="relative w-full aspect-[16/9] sm:aspect-[4/3] overflow-hidden mb-3 sm:mb-4 rounded-sm bg-gray-900">
+                    {!loadedImages.has(index) && (
+                      <div className="absolute inset-0 overflow-hidden">
+                        <div className="absolute inset-0 bg-gray-800" />
+                        <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800" />
+                      </div>
+                    )}
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      sizes="(min-width: 768px) 25vw, 100vw"
+                      onLoad={() => setLoadedImages((prev) => new Set(prev).add(index))}
+                      className={`object-cover group-hover:scale-105 transition-all duration-500 ${
+                        loadedImages.has(index) ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                  </div>
+                  <div className="text-xs font-bold text-gray-400 mb-2 tracking-widest uppercase flex gap-4">
+                    <span>{formatTimeAgo(new Date(item.createdAt), locale)}</span>
+                  </div>
+                  <h4 className="text-base sm:text-lg font-bold text-white group-hover:underline mb-2 sm:mb-4">
+                    {item.title}
+                  </h4>
+                  <div className="mt-auto flex items-center text-xs text-gray-400 tracking-wider font-bold">
+                    <Bookmark className="w-4 h-4 mr-2" />
+                    <span className="uppercase">{formatTimeAgo(new Date(item.createdAt), locale)}</span>
+                  </div>
+                </div>
               ))}
             </div>
-
-            {/* Featured Section */}
-            <div className="md:w-3/4 flex flex-col">
-              <h3 className="text-xs font-bold tracking-wider text-gray-400 mb-6 uppercase">
-                Featured
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {featuredItems.map((item, index) => (
-                  <div key={index} className="flex flex-col group cursor-pointer">
-                    <div className="relative w-full aspect-square md:aspect-[4/3] overflow-hidden mb-4">
-                      {/* External image optimization is configured in next.config.ts */}
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        sizes="(min-width: 768px) 25vw, 100vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="text-xs font-bold text-gray-400 mb-2 tracking-widest uppercase flex gap-4">
-                      <span>{item.readTime}</span>
-                    </div>
-                    <h4 className="text-lg font-bold text-white group-hover:underline mb-4">
-                      {item.title}
-                    </h4>
-                    <div className="mt-auto flex items-center text-xs text-gray-400 tracking-wider font-bold">
-                      <Bookmark className="w-4 h-4 mr-2" />
-                      <span className="uppercase">{item.type}</span>
-                      <span className="mx-2">•</span>
-                      <span className="uppercase">{item.timeAgo}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
           </div>
         </div>
+      </div>
     </div>
   );
 }
