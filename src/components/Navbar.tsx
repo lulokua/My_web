@@ -1,5 +1,6 @@
 import SearchBox from "@/components/SearchBox";
 import ExploreDropdown from "@/components/ExploreDropdown";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { getDictionary, getLocalizedPath, type Locale } from "@/lib/i18n";
 
 type NavbarProps = {
@@ -15,6 +16,11 @@ export default function Navbar({ locale }: NavbarProps) {
       active: true,
     },
     {
+      label: dictionary.nav.links.dailyRecord,
+      href: getLocalizedPath(locale, "/daily-record"),
+      active: false,
+    },
+    {
       label: dictionary.nav.links.webLog,
       href: getLocalizedPath(locale, "/web-log"),
       active: false,
@@ -22,7 +28,7 @@ export default function Navbar({ locale }: NavbarProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-black text-white relative">
+    <header className="relative z-50 w-full border-b border-gray-800 bg-black text-white">
       <div className="flex w-full h-16 sm:h-[84px] items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-6 md:gap-10">
           <ExploreDropdown
@@ -36,6 +42,9 @@ export default function Navbar({ locale }: NavbarProps) {
             clearLabel={dictionary.search.clearLabel}
             placeholder={dictionary.search.placeholder}
           />
+        </div>
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher currentLocale={locale} />
         </div>
       </div>
     </header>

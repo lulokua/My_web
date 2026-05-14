@@ -79,17 +79,24 @@ export default function ExploreDropdown({
       }
     }
 
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
+    
     return () => {
+      document.body.style.overflow = "";
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isOpen]);
 
   return (
     <div className="flex items-center" ref={dropdownRef}>
       <button
         onClick={() => {
-          if (isOpen) setLoadedImages(new Set());
           setIsOpen(!isOpen);
         }}
         className="flex items-center space-x-2 focus:outline-none group"

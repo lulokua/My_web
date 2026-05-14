@@ -28,6 +28,7 @@ export const dictionaries = {
       featured: "Featured",
       links: {
         home: "Home",
+        dailyRecord: "Daily Record",
         webLog: "Web Log",
       },
     },
@@ -45,6 +46,38 @@ export const dictionaries = {
           title: "A New Week, New Experiences, New Perspectives",
           createdAt: "2026-05-15T19:48:00",
           image: "https://my-blog.cn-nb1.rains3.com/My_web/%20Featured/1.jpg",
+        },
+      ],
+    },
+    dailyRecord: {
+      metadata: {
+        title: "Daily Record | My Web",
+        description: "A record of daily thoughts and moments.",
+      },
+      title: "Daily Record",
+      subtitle: "Capturing the little things in life.",
+      topText: "Share life anytime, anywhere",
+      aboutMe: "About Me",
+      backHome: "Back to Home",
+      entries: [
+        {
+          id: 1,
+          date: "2026-05-15",
+          timeAgo: "Just now",
+          author: "lokua",
+          avatar: "https://avatars.githubusercontent.com/u/237419681?s=48&v=4",
+          location: "Pingnan",
+          content: "The website is finally getting ready for release!!!",
+        },
+        {
+          id: 2,
+          date: "2026-05-14",
+          timeAgo: "1 day ago",
+          author: "lokua",
+          avatar: "https://avatars.githubusercontent.com/u/237419681?s=48&v=4",
+          location: "Pingnan",
+          content: "Feeling emo.",
+          images: ["https://my-blog.cn-nb1.rains3.com/My_web/%20Featured/1.jpg"],
         },
       ],
     },
@@ -73,6 +106,7 @@ export const dictionaries = {
       featured: "精选",
       links: {
         home: "首页",
+        dailyRecord: "日常记录",
         webLog: "网站日志",
       },
     },
@@ -82,7 +116,7 @@ export const dictionaries = {
     },
     home: {
       heroLine1: "生而",
-      heroLine2: "探索。",
+      heroLine2: "探索",
     },
     featured: {
       items: [
@@ -90,6 +124,38 @@ export const dictionaries = {
           title: "新的一周，新的体验，新的感受",
           createdAt: "2026-05-15T19:48:00",
           image: "https://my-blog.cn-nb1.rains3.com/My_web/%20Featured/1.jpg",
+        },
+      ],
+    },
+    dailyRecord: {
+      metadata: {
+        title: "日常记录 | 我的网站",
+        description: "日常想法与生活瞬间的记录。",
+      },
+      title: "即刻短文",
+      subtitle: "咸鱼的日常生活。",
+      topText: "随时随地，分享生活",
+      aboutMe: "关于我",
+      backHome: "返回首页",
+      entries: [
+        {
+          id: 1,
+          date: "2026-05-15",
+          timeAgo: "刚刚",
+          author: "lokua",
+          avatar: "https://avatars.githubusercontent.com/u/237419681?s=48&v=4",
+          location: "平南",
+          content: "网站准备开发完成啦！！！",
+        },
+        {
+          id: 2,
+          date: "2026-05-14",
+          timeAgo: "昨天",
+          author: "lokua",
+          avatar: "https://avatars.githubusercontent.com/u/237419681?s=48&v=4",
+          location: "平南",
+          content: "emo中",
+          images: ["https://my-blog.cn-nb1.rains3.com/My_web/%20Featured/1.jpg"],
         },
       ],
     },
