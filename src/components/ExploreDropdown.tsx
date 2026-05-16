@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Bookmark } from "lucide-react";
+import { useLenis } from "lenis/react";
 
 import type { Locale } from "@/lib/i18n";
 
@@ -11,6 +12,7 @@ type ExploreLink = {
   label: string;
   href: string;
   active?: boolean;
+  separator?: boolean;
 };
 
 type FeaturedItem = {
@@ -71,6 +73,7 @@ export default function ExploreDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const lenis = useLenis();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -80,15 +83,22 @@ export default function ExploreDropdown({
     }
 
     if (isOpen) {
+      lenis?.stop();
+      // 计算滚动条的宽度，防止隐藏滚动条时页面产生左右晃动（Layout Shift）
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
+      lenis?.start();
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
     }
 
     document.addEventListener("mousedown", handleClickOutside);
     
     return () => {
       document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
@@ -112,6 +122,7 @@ export default function ExploreDropdown({
       </button>
 
       <div
+        data-lenis-prevent="true"
         className={`absolute left-0 top-16 sm:top-[84px] w-full bg-black shadow-2xl z-50 h-[calc(100dvh-64px)] sm:h-[calc(100dvh-84px)] overflow-y-auto transition-all duration-500 ease-in-out ${
           isOpen
             ? "opacity-100 visible translate-y-0 border-t border-gray-800"
@@ -121,16 +132,20 @@ export default function ExploreDropdown({
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row py-6 sm:py-8 px-4 sm:px-6 lg:px-8 gap-8 md:gap-12">
           <div className="md:w-1/4 flex flex-col space-y-3 sm:space-y-4">
             {links.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className={`text-sm sm:text-base font-medium text-white hover:text-gray-300 w-fit ${
-                  link.active ? "border-b-2 border-dotted border-white pb-0.5" : ""
-                }`}
-              >
-                {link.label}
-              </Link>
+              <div key={link.label} className="flex flex-col">
+                {link.separator && (
+                  <div className="w-full border-t border-dashed border-gray-700 mb-3 sm:mb-4" />
+                )}
+                <Link
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-sm sm:text-base font-medium text-white hover:text-gray-300 w-fit ${
+                    link.active ? "border-b-2 border-dotted border-white pb-0.5" : ""
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </div>
             ))}
           </div>
 

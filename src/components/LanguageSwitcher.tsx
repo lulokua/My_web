@@ -34,6 +34,7 @@ export default function LanguageSwitcher({ currentLocale }: LanguageSwitcherProp
     >
       <Link
         href={getTargetUrl()}
+        scroll={false}
         aria-label={currentLocale === "zh" ? "Switch to English" : "切换到中文"}
         title={currentLocale === "zh" ? "Switch to English" : "切换到中文"}
       >

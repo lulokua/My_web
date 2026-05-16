@@ -21,6 +21,17 @@ export default function Navbar({ locale }: NavbarProps) {
       active: false,
     },
     {
+      label: dictionary.nav.links.aboutMe,
+      href: getLocalizedPath(locale, "/about"),
+      active: false,
+    },
+    {
+      label: dictionary.nav.links.core,
+      href: getLocalizedPath(locale, "/core"),
+      active: false,
+      separator: true,
+    },
+    {
       label: dictionary.nav.links.webLog,
       href: getLocalizedPath(locale, "/web-log"),
       active: false,
@@ -28,7 +39,7 @@ export default function Navbar({ locale }: NavbarProps) {
   ];
 
   return (
-    <header className="relative z-50 w-full border-b border-gray-800 bg-black text-white">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-black text-white">
       <div className="flex w-full h-16 sm:h-[84px] items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-6 md:gap-10">
           <ExploreDropdown

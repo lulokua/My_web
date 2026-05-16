@@ -41,3 +41,6 @@ next-env.d.ts
 
 # cached github commits
 /public/commits.json
+
+# ide
+.claude/

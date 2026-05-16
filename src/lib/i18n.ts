@@ -29,6 +29,8 @@ export const dictionaries = {
       links: {
         home: "Home",
         dailyRecord: "Daily Record",
+        aboutMe: "About Me",
+        core: "Website Core",
         webLog: "Web Log",
       },
     },
@@ -57,7 +59,6 @@ export const dictionaries = {
       title: "Daily Record",
       subtitle: "Capturing the little things in life.",
       topText: "Share life anytime, anywhere",
-      aboutMe: "About Me",
       backHome: "Back to Home",
       entries: [
         {
@@ -80,6 +81,35 @@ export const dictionaries = {
           images: ["https://my-blog.cn-nb1.rains3.com/My_web/%20Featured/1.jpg"],
         },
       ],
+    },
+    core: {
+      metadata: {
+        title: "Website Core | My Web",
+        description: "The core ideas and pillars of this site.",
+      },
+      backHome: "Back to Home",
+      title: "Website Core",
+      subtitle: "The foundation and principles behind everything here.",
+    },
+    about: {
+      metadata: {
+        title: "About Me | My Web",
+        description: "A little bit about the person behind this site.",
+      },
+      backHome: "Back to Home",
+      title: "About Me",
+      subtitle: "The person behind the code.",
+      name: "lokua",
+      bio: "A passionate developer exploring the world of web technologies. Building cool things, one line of code at a time.",
+    },
+    website: {
+      metadata: {
+        title: "Website | My Web",
+        description: "Website-related information and resources.",
+      },
+      backHome: "Back to Home",
+      title: "Website",
+      subtitle: "Information and resources about this site.",
     },
     webLog: {
       metadata: {
@@ -107,6 +137,8 @@ export const dictionaries = {
       links: {
         home: "首页",
         dailyRecord: "日常记录",
+        aboutMe: "关于我",
+        core: "网站核心",
         webLog: "网站日志",
       },
     },
@@ -135,7 +167,6 @@ export const dictionaries = {
       title: "即刻短文",
       subtitle: "咸鱼的日常生活。",
       topText: "随时随地，分享生活",
-      aboutMe: "关于我",
       backHome: "返回首页",
       entries: [
         {
@@ -158,6 +189,35 @@ export const dictionaries = {
           images: ["https://my-blog.cn-nb1.rains3.com/My_web/%20Featured/1.jpg"],
         },
       ],
+    },
+    core: {
+      metadata: {
+        title: "网站核心 | 我的网站",
+        description: "这个网站的核心思想与支柱。",
+      },
+      backHome: "返回首页",
+      title: "网站核心",
+      subtitle: "这里的一切背后的基础与原则。",
+    },
+    about: {
+      metadata: {
+        title: "关于我 | 我的网站",
+        description: "关于这个网站背后的人。",
+      },
+      backHome: "返回首页",
+      title: "关于我",
+      subtitle: "代码背后的人。",
+      name: "lokua",
+      bio: "一个热爱探索 Web 技术的开发者。一行代码，一行热爱，专注构建有趣的东西。",
+    },
+    website: {
+      metadata: {
+        title: "网站 | 我的网站",
+        description: "与网站相关的信息和资源。",
+      },
+      backHome: "返回首页",
+      title: "网站",
+      subtitle: "关于本站的信息与资源。",
     },
     webLog: {
       metadata: {

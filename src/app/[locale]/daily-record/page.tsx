@@ -112,6 +112,7 @@ export default async function DailyRecordPage({ params }: DailyRecordPageProps) 
             </div>
           ))}
         </div>
+
       </div>
 
       <ScrollToTopButton />
