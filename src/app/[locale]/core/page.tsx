@@ -1,35 +1,16 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
-import { getDictionary, isLocale, type Locale } from "@/lib/i18n";
-import CoreClient from "./CoreClient";
+import CoreExperience from "@/sections/core/CoreExperience";
+import { type LocalePageProps, getLocaleContext } from "@/shared/lib/locale";
 
-type CorePageProps = {
-  params: Promise<{ locale: string }>;
-};
-
-async function resolveLocale(params: CorePageProps["params"]): Promise<Locale> {
-  const { locale } = await params;
-
-  if (!isLocale(locale)) {
-    notFound();
-  }
-
-  return locale;
-}
-
-export async function generateMetadata({ params }: CorePageProps): Promise<Metadata> {
-  const locale = await resolveLocale(params);
-  const dictionary = getDictionary(locale);
+export async function generateMetadata({ params }: LocalePageProps): Promise<Metadata> {
+  const { dictionary } = await getLocaleContext(params);
 
   return dictionary.core.metadata;
 }
 
-export default async function CorePage({ params }: CorePageProps) {
-  const locale = await resolveLocale(params);
-  const dictionary = getDictionary(locale);
+export default async function CorePage({ params }: LocalePageProps) {
+  const { dictionary } = await getLocaleContext(params);
 
-  return (
-    <CoreClient locale={locale} dictionary={dictionary.core} />
-  );
+  return <CoreExperience dictionary={dictionary.core} />;
 }

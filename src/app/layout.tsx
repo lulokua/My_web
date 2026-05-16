@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+
+import SmoothScrollProvider from "@/shared/layout/providers/SmoothScrollProvider";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,10 +16,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased min-h-screen flex flex-col bg-black text-white overscroll-none overflow-x-hidden">
-        <SmoothScrollProvider>
-          {children}
-        </SmoothScrollProvider>
+      <body className="flex min-h-screen flex-col overflow-x-hidden overscroll-none bg-black text-white antialiased">
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
   );

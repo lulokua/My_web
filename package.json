@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/fetch-commits.mjs",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
+    "dev:turbo": "next dev --turbopack",
     "prebuild": "node scripts/fetch-commits.mjs",
     "build": "next build",
     "prestart": "node scripts/fetch-commits.mjs",

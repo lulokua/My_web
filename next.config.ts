@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
+import { securityHeaders } from "./src/shared/lib/securityHeaders";
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   allowedDevOrigins: ["localhost:3001", "127.0.0.1:3001", "localhost:3000", "127.0.0.1:3000", "localhost", "127.0.0.1"],
   images: {
     remotePatterns: [
@@ -16,7 +19,19 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "my-blog.cn-nb1.rains3.com",
       },
+      {
+        protocol: "https",
+        hostname: "q.qlogo.cn",
+      },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [...securityHeaders],
+      },
+    ];
   },
 };
 

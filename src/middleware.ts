@@ -1,28 +1,32 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { defaultLocale, isLocale } from "@/lib/i18n";
+import { defaultLocale, isLocale } from "@/content/i18n";
+import { applySecurityHeaders } from "@/shared/lib/securityHeaders";
 
 const PUBLIC_FILE = /\.[^/]+$/;
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    PUBLIC_FILE.test(pathname)
-  ) {
-    return NextResponse.next();
+  if (pathname.startsWith("/_next") || pathname.startsWith("/api") || PUBLIC_FILE.test(pathname)) {
+    const response = NextResponse.next();
+    applySecurityHeaders(response.headers);
+    return response;
   }
 
   const firstSegment = pathname.split("/")[1];
+
   if (isLocale(firstSegment)) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    applySecurityHeaders(response.headers);
+    return response;
   }
 
   const url = request.nextUrl.clone();
   url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
-  return NextResponse.redirect(url);
+  const response = NextResponse.redirect(url);
+  applySecurityHeaders(response.headers);
+  return response;
 }
 
 export const config = {

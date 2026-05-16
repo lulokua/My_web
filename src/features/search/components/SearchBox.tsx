@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/shared/ui/input";
 
 type SearchBoxProps = {
   clearLabel: string;
@@ -28,8 +28,10 @@ export default function SearchBox({ clearLabel, placeholder }: SearchBoxProps) {
     let deleting = false;
     let timer: ReturnType<typeof setTimeout>;
 
-    function tick() {
-      if (cancelled) return;
+    const tick = () => {
+      if (cancelled) {
+        return;
+      }
 
       if (!deleting) {
         charIdx += 1;
@@ -42,42 +44,28 @@ export default function SearchBox({ clearLabel, placeholder }: SearchBoxProps) {
         }
 
         timer = setTimeout(tick, 110);
-      } else {
-        charIdx -= 1;
-        setAnimatedPlaceholder(placeholder.slice(0, charIdx));
-
-        if (charIdx === 0) {
-          deleting = false;
-          timer = setTimeout(tick, 350);
-        } else {
-          timer = setTimeout(tick, 45);
-        }
+        return;
       }
-    }
+
+      charIdx -= 1;
+      setAnimatedPlaceholder(placeholder.slice(0, charIdx));
+
+      if (charIdx === 0) {
+        deleting = false;
+        timer = setTimeout(tick, 350);
+        return;
+      }
+
+      timer = setTimeout(tick, 45);
+    };
 
     timer = setTimeout(tick, 500);
+
     return () => {
       cancelled = true;
       clearTimeout(timer);
     };
   }, [isFocused, placeholder, query]);
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const keyword = query.trim();
-    if (!keyword) return;
-    console.log("Search:", keyword);
-  }
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setQuery(e.target.value);
-    setKeystroke((value) => value + 1);
-  }
-
-  function handleClear() {
-    setQuery("");
-    inputRef.current?.focus();
-  }
 
   const showTypewriter = !query && !isFocused;
 
@@ -85,8 +73,8 @@ export default function SearchBox({ clearLabel, placeholder }: SearchBoxProps) {
     <>
       <div
         aria-hidden="true"
-        onMouseDown={(e) => {
-          e.preventDefault();
+        onMouseDown={(event) => {
+          event.preventDefault();
           inputRef.current?.blur();
         }}
         className={`fixed inset-0 bg-black/30 backdrop-blur-md transition-opacity duration-300 ease-out ${
@@ -94,9 +82,18 @@ export default function SearchBox({ clearLabel, placeholder }: SearchBoxProps) {
         }`}
       />
       <form
-        onSubmit={handleSubmit}
         role="search"
-        className={`relative z-10 w-56 sm:w-60 md:w-64 transition-transform duration-300 ease-out ${
+        onSubmit={(event) => {
+          event.preventDefault();
+
+          const keyword = query.trim();
+          if (!keyword) {
+            return;
+          }
+
+          console.info("Search keyword:", keyword);
+        }}
+        className={`relative z-10 w-56 transition-transform duration-300 ease-out sm:w-60 md:w-64 ${
           isFocused ? "scale-[1.03]" : "scale-100"
         }`}
       >
@@ -111,44 +108,50 @@ export default function SearchBox({ clearLabel, placeholder }: SearchBoxProps) {
           ref={inputRef}
           type="search"
           value={query}
-          onChange={handleChange}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            setKeystroke((value) => value + 1);
+          }}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder={showTypewriter ? "" : placeholder}
           aria-label={placeholder}
-          className={`h-9 pl-9 pr-9 bg-white/10 border-white/20 text-white placeholder:text-white/60 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-0 focus-visible:bg-white/15 ${
+          className={`h-9 border-white/20 bg-white/10 pl-9 pr-9 text-white placeholder:text-white/60 transition-all duration-300 focus-visible:bg-white/15 focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-0 ${
             isFocused ? "shadow-[0_0_24px_rgba(255,255,255,0.18)]" : "shadow-none"
           }`}
         />
 
-        {showTypewriter && (
+        {showTypewriter ? (
           <div
             aria-hidden="true"
             className="pointer-events-none absolute left-9 top-1/2 z-10 flex -translate-y-1/2 select-none items-center text-sm text-white/60"
           >
             <span>{animatedPlaceholder}</span>
-            <span className="ml-[1px] inline-block h-3.5 w-[1.5px] bg-white/70 animate-caret-blink" />
+            <span className="animate-caret-blink ml-[1px] inline-block h-3.5 w-[1.5px] bg-white/70" />
           </div>
-        )}
+        ) : null}
 
-        {query && (
+        {query ? (
           <span
             key={keystroke}
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-white/50 animate-keystroke-pulse"
+            className="animate-keystroke-pulse pointer-events-none absolute inset-0 rounded-md ring-1 ring-white/50"
           />
-        )}
+        ) : null}
 
-        {query && (
+        {query ? (
           <button
             type="button"
-            onClick={handleClear}
+            onClick={() => {
+              setQuery("");
+              inputRef.current?.focus();
+            }}
             aria-label={clearLabel}
             className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full p-1 text-white/70 transition-colors duration-150 hover:bg-white/10 hover:text-white"
           >
             <X className="h-3.5 w-3.5" />
           </button>
-        )}
+        ) : null}
       </form>
     </>
   );

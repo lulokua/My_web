@@ -1,7 +1,6 @@
-import { notFound } from "next/navigation";
-
-import Navbar from "@/components/Navbar";
-import { getDictionary, isLocale, locales } from "@/lib/i18n";
+import { locales } from "@/content/i18n";
+import Navbar from "@/features/navigation/components/Navbar";
+import { getLocaleContext } from "@/shared/lib/locale";
 
 type LocaleLayoutProps = Readonly<{
   children: React.ReactNode;
@@ -13,17 +12,16 @@ export function generateStaticParams() {
 }
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
-  const { locale } = await params;
-
-  if (!isLocale(locale)) {
-    notFound();
-  }
-
-  const dictionary = getDictionary(locale);
+  const { locale, dictionary } = await getLocaleContext(params);
 
   return (
     <div lang={dictionary.htmlLang} className="flex min-h-screen flex-col">
-      <Navbar locale={locale} />
+      <Navbar
+        locale={locale}
+        navigation={dictionary.nav}
+        search={dictionary.search}
+        featuredItems={dictionary.featured.items}
+      />
       <main className="flex-1">{children}</main>
     </div>
   );

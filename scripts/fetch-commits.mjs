@@ -8,6 +8,8 @@ const PUBLIC_DIR = join(__dirname, "..", "public");
 const OUTPUT_PATH = join(PUBLIC_DIR, "commits.json");
 
 const COMMITS_ENDPOINT = "https://api.github.com/repos/lulokua/My_web/commits";
+const COMMIT_URL_BASE = "https://github.com/lulokua/My_web/commit/";
+const SHA_PATTERN = /^[0-9a-f]{40}$/i;
 
 async function fetchCommits() {
   const url = new URL(COMMITS_ENDPOINT);
@@ -36,12 +38,18 @@ async function fetchCommits() {
 }
 
 function parseCommit(item) {
-  const [firstLine = "Untitled commit", ...restLines] = item.commit.message.split(/\r?\n/);
-  const committedAt = item.commit.author?.date ?? "";
+  const sha = typeof item?.sha === "string" && SHA_PATTERN.test(item.sha) ? item.sha : null;
+  if (!sha) {
+    return null;
+  }
+
+  const message = typeof item?.commit?.message === "string" ? item.commit.message : "Untitled commit";
+  const [firstLine = "Untitled commit", ...restLines] = message.split(/\r?\n/);
+  const committedAt = typeof item?.commit?.author?.date === "string" ? item.commit.author.date : "";
 
   return {
-    sha: item.sha,
-    shortSha: item.sha.slice(0, 7),
+    sha,
+    shortSha: sha.slice(0, 7),
     title: firstLine.trim() || "Untitled commit",
     detail: restLines.join("\n").trim(),
     authorName: item.author?.login ?? item.commit.author?.name ?? "Unknown author",
@@ -56,7 +64,7 @@ function parseCommit(item) {
           minute: "2-digit",
         }).format(new Date(committedAt))
       : "Unknown date",
-    htmlUrl: item.html_url,
+    htmlUrl: `${COMMIT_URL_BASE}${sha}`,
   };
 }
 
@@ -64,7 +72,7 @@ async function main() {
   try {
     console.log("[fetch-commits] Fetching commits from GitHub API...");
     const rawCommits = await fetchCommits();
-    const parsedCommits = rawCommits.map(parseCommit);
+    const parsedCommits = rawCommits.map(parseCommit).filter(Boolean);
 
     if (!existsSync(PUBLIC_DIR)) {
       mkdirSync(PUBLIC_DIR, { recursive: true });
