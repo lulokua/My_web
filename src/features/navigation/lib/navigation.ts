@@ -30,6 +30,11 @@ export function buildNavbarLinks(locale: Locale, labels: Dictionary["nav"]["link
       href: getLocalizedPath(locale, "/video"),
     },
     {
+      key: "plan",
+      label: labels.plan,
+      href: getLocalizedPath(locale, "/plan"),
+    },
+    {
       key: "about",
       label: labels.aboutMe,
       href: getLocalizedPath(locale, "/about"),

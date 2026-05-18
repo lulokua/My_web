@@ -15,7 +15,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["MiSans", "system-ui", "-apple-system", "sans-serif"],
-        anthropic: ["Anthropic", "sans-serif"],
+        anthropic: ["Anthropic", "MiSans", "system-ui", "-apple-system", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

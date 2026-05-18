@@ -31,6 +31,7 @@ export type Dictionary = {
       dailyRecord: string;
       photo: string;
       video: string;
+      plan: string;
       aboutMe: string;
       core: string;
       webLog: string;
@@ -164,6 +165,30 @@ export type Dictionary = {
       };
     };
   };
+  plan: {
+    metadata: {
+      title: string;
+      description: string;
+    };
+    backHome: string;
+    title: string;
+    subtitle: string;
+    year: string;
+    yearExpanded: string;
+    mayJuly: {
+      metadata: {
+        title: string;
+        description: string;
+      };
+      backLabel: string;
+      title: string;
+      subtitle: string;
+      sections: {
+        heading: string;
+        items: string[];
+      }[];
+    };
+  };
   website: {
     metadata: {
       title: string;
@@ -224,6 +249,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         dailyRecord: "Daily Record",
         photo: "Photo",
         video: "Video",
+        plan: "Plan",
         aboutMe: "About Me",
         core: "Website Core",
         webLog: "Web Log",
@@ -399,6 +425,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
         }
       }
     },
+    plan: {
+      metadata: {
+        title: "Plan | My Web",
+        description: "Plans and goals for this year.",
+      },
+      backHome: "Back to Home",
+      title: "Plan",
+      subtitle: "To reach the places I’ve long dreamed of,\nand meet the people I’ve long held in my heart.",
+      year: "2026",
+      yearExpanded: "May - July",
+      mayJuly: {
+        metadata: {
+          title: "May - July Plan | My Web",
+          description: "Detailed plan for May to July 2026.",
+        },
+        backLabel: "Back to Plan",
+        title: "May - July",
+        subtitle: "Theme: No Compromises.",
+        sections: [
+          {
+            heading: "Overview",
+            items: [
+              "I refuse to be defeated. By my own strength and relentless effort, I will carve out a place for myself in this world. No matter how long the road may be, no matter whether anyone applauds, I will keep moving forward — to strive, to fight, to chase the places I long to see, to meet the people I yearn to meet, and to become the person I was always meant to be.",
+            ],
+          },
+        ],
+      },
+    },
     website: {
       metadata: {
         title: "Website | My Web",
@@ -457,6 +511,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
         dailyRecord: "日常记录",
         photo: "照片",
         video: "视频",
+        plan: "计划",
         aboutMe: "关于我",
         core: "网站核心",
         webLog: "网站日志",
@@ -631,6 +686,34 @@ export const dictionaries: Record<Locale, Dictionary> = {
           goal: "✨ 目标：期待参加大模型研发 / Looking forward to participating in Large Language Model (LLM) R&D。"
         }
       }
+    },
+    plan: {
+      metadata: {
+        title: "计划 | 我的网站",
+        description: "今年的计划与目标。",
+      },
+      backHome: "返回首页",
+      title: "计划",
+      subtitle: "去想去的地方，去见想见的人！",
+      year: "2026",
+      yearExpanded: "五月 - 七月",
+      mayJuly: {
+        metadata: {
+          title: "五月 - 七月计划 | 我的网站",
+          description: "2026 年 5 月到 7 月的详细计划。",
+        },
+        backLabel: "返回计划",
+        title: "五月 - 七月",
+        subtitle: "主题：不将就",
+        sections: [
+          {
+            heading: "概览",
+            items: [
+              "我从不认输。我要凭自己的努力，在这个世界闯出属于自己的一片天地。哪怕前路漫长，哪怕无人喝彩，我也要继续向前，去拼，去闯，去奔赴想去的远方，去见想见的人，去成为真正想成为的自己。",
+            ],
+          },
+        ],
+      },
     },
     website: {
       metadata: {

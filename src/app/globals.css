@@ -92,6 +92,10 @@
     font-family: 'MiSans', system-ui, -apple-system, sans-serif;
   }
 
+  html {
+    scrollbar-color: #fff transparent;
+  }
+
   /* 隐藏浏览器自带的 search 清除按钮（使用自定义按钮替代） */
   input[type="search"]::-webkit-search-decoration,
   input[type="search"]::-webkit-search-cancel-button,
@@ -100,30 +104,6 @@
     -webkit-appearance: none;
     appearance: none;
   }
-}
-
-/* 优雅的自定义滚动条 */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(100, 100, 100, 0.3);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 100, 100, 0.6);
-  border-radius: 10px;
-  border: 2px solid transparent;
-  background-clip: content-box;
 }
 
 /* 搜索框相关的关键帧动画 */
