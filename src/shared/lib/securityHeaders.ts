@@ -4,7 +4,7 @@ const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isProduction ? "" : " 'unsafe-eval'"}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://avatars.githubusercontent.com https://my-blog.cn-nb1.rains3.com",
+  "img-src 'self' data: blob: https://images.unsplash.com https://avatars.githubusercontent.com https://my-blog.cn-nb1.rains3.com https://q.qlogo.cn",
   "font-src 'self' data: https://my-blog.cn-nb1.rains3.com",
   `connect-src 'self'${isProduction ? "" : " ws: http://localhost:* http://127.0.0.1:*"}`,
   "frame-src 'none'",

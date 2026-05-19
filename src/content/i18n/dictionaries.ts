@@ -445,9 +445,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
         subtitle: "Theme: No Compromises.",
         sections: [
           {
-            heading: "Overview",
+            heading: "Action Plan",
             items: [
-              "I refuse to be defeated. By my own strength and relentless effort, I will carve out a place for myself in this world. No matter how long the road may be, no matter whether anyone applauds, I will keep moving forward — to strive, to fight, to chase the places I long to see, to meet the people I yearn to meet, and to become the person I was always meant to be.",
+              "Lose 10 kg (approx. 22 lbs).",
+              "Memorize 200 vocabulary words (including sentences).",
+              "Review all Pinyin.",
+              "Review all phonetic symbols.",
+              "Start reviewing Math, Chinese, Chemistry, and Physics: Review each subject starting from the first year of high school. Study at least 5 units per subject, and ensure the generalization and integration of past knowledge.",
             ],
           },
         ],
@@ -707,9 +711,13 @@ export const dictionaries: Record<Locale, Dictionary> = {
         subtitle: "主题：不将就",
         sections: [
           {
-            heading: "概览",
+            heading: "行动计划",
             items: [
-              "我从不认输。我要凭自己的努力，在这个世界闯出属于自己的一片天地。哪怕前路漫长，哪怕无人喝彩，我也要继续向前，去拼，去闯，去奔赴想去的远方，去见想见的人，去成为真正想成为的自己。",
+              "减肥 20 斤。",
+              "背 200 个单词（包含语句）。",
+              "全部拼音复习。",
+              "全部音标复习。",
+              "开始复习数学、语文、化学、物理：要求每个科目都在高一开始重新复习，每个科目至少要学习 5 个单元，并且做到泛化回以前的知识。",
             ],
           },
         ],

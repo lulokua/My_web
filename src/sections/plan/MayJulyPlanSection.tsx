@@ -2,8 +2,7 @@ import type { Dictionary, Locale } from "@/content/i18n";
 import { getLocalizedPath } from "@/content/i18n";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import MusicPlayer from "./components/MusicPlayer";
+import { ArrowLeft, Flag } from "lucide-react";
 
 type MayJulyPlanSectionProps = {
   locale: Locale;
@@ -45,24 +44,44 @@ export default function MayJulyPlanSection({ locale, dictionary }: MayJulyPlanSe
         </div>
       </header>
 
-      <div className="relative w-full max-w-3xl space-y-4 px-4 py-8 sm:space-y-6 sm:px-6 sm:py-12 lg:py-16">
+      <div className="relative w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
         {dictionary.sections.map((section) => (
-          <div
-            key={section.heading}
-            className="rounded-2xl bg-white p-6 ring-1 ring-black/5 sm:p-8"
-          >
-            <h2 className="mb-3 text-base font-semibold text-zinc-900 sm:mb-4 sm:text-lg">
-              {section.heading}
-            </h2>
-            <ul className="list-disc space-y-1 pl-5 text-[15px] leading-relaxed text-zinc-600">
+          <section key={section.heading} className="w-full">
+            <div className="mb-8 text-center sm:mb-10">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm ring-1 ring-zinc-200/50">
+                <Flag className="h-5 w-5 text-zinc-900" />
+              </div>
+              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+                {section.heading}
+              </h2>
+            </div>
+
+            <div className="space-y-3 sm:space-y-4">
               {section.items.map((item, idx) => (
-                <li key={idx}>{item}</li>
+                <div
+                  key={idx}
+                  className="group relative overflow-hidden rounded-2xl bg-white shadow-[0_2px_8px_-4px_rgba(0,0,0,0.02)] ring-1 ring-zinc-200/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-8px_rgba(0,0,0,0.08)] hover:ring-zinc-300"
+                >
+                  <div className="absolute -right-4 -top-6 select-none text-[100px] font-black leading-none text-zinc-50 transition-transform duration-500 group-hover:scale-110 group-hover:text-zinc-100">
+                    {idx + 1}
+                  </div>
+
+                  <div className="relative z-10 flex items-start gap-3 p-4 sm:gap-4 sm:p-5">
+                    <div className="mt-0.5 flex shrink-0">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#F3F1EC] text-sm font-bold text-zinc-500 transition-all duration-300 group-hover:scale-110 group-hover:bg-zinc-900 group-hover:text-white sm:h-10 sm:w-10 sm:text-base">
+                        {idx + 1}
+                      </div>
+                    </div>
+                    <p className="text-[14px] leading-relaxed text-zinc-700 sm:text-[15px]">
+                      {item}
+                    </p>
+                  </div>
+                </div>
               ))}
-            </ul>
-          </div>
+            </div>
+          </section>
         ))}
       </div>
-      <MusicPlayer bvid="BV1AD421K7Ha" />
     </div>
   );
 }
